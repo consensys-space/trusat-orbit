@@ -5,12 +5,12 @@ import numpy as np
 # https://setuptools.readthedocs.io/en/latest/setuptools.html#declaring-extras-optional-features-with-their-own-dependencies
 
 extensions = [
-  Extension('caccelerated',
+  Extension('trusat.caccelerated',
             sources=['trusat/caccelerated.pyx'],
             include_dirs=[np.get_include()],
             extra_compile_args=['-O3','-ffast-math','-march=native'],
   ),
-  Extension('profile',
+  Extension('trusat.profile',
             sources=['trusat/profile.pyx'],           
             optional='optional',
             include_dirs=[np.get_include(), '/usr/local/include'],
@@ -23,6 +23,9 @@ extensions = [
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
+
+with open('requirements.txt') as f:
+    requirements = f.read().splitlines()
 
 setup(
     name="trusat-orbit", 
@@ -45,9 +48,12 @@ setup(
         "Operating System :: OS Independent",
     ],
     python_requires='>=3.6',
+    install_requires=[
+        requirements,
+        'trusat_backend==1.1.0',
+    ],
     ext_modules=cythonize(extensions),
-    # install_requires=[
-    #     'database==0.0',
-    # ],
-    # dependency_links = ['git+https://github.com/TruSat/trusat-backend@dev.chris#egg=database-0.0']
+    dependency_links = [
+        'git+https://github.com/TruSat/trusat-backend@dev.chris.package#egg=trusat_backend-1.1.0'
+    ],
 )

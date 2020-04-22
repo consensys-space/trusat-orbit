@@ -42,28 +42,21 @@ import pickle
 # Use local/dev version of python-sgp4
 
 from sgp4.api import Satrec, SatrecArray, SGP4_ERRORS, jday
-try:
-    from caccelerated import *
-    # from satfit_caccelerated import *
-#    from sgp4.cpropagation import sgp4, sgp4init
-#    from sgp4.cmodel import Satellite
-except ImportError as e:
-    print(e)
-    from sgp4.propagation import sgp4, sgp4init
-    from sgp4.model import Satellite
+from caccelerated import *
 from sgp4 import earth_gravity
 
-import trusat.iod
+# Not currently used, but restore with reading of local IOD files
+from . import iod
 
-from trusat.tle_util import make_tle, append_tle_file, TLEFile, tle_fmt_epoch, datetime_from_tle_fmt, assumed_decimal_point, checksum_tle_line, TruSatellite, make_tle_from_SGP4_satrec
+from .tle_util import make_tle, append_tle_file, TLEFile, tle_fmt_epoch, datetime_from_tle_fmt, assumed_decimal_point, checksum_tle_line, TruSatellite, make_tle_from_SGP4_satrec
 
 # The following 5 lines are necessary until our modules are public
-import inspect
-currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
-parentdir = os.path.dirname(currentdir)
-backend_path = os.path.join(parentdir, "../trusat-backend")
-sys.path.insert(1,backend_path) 
-import database
+# import inspect
+# currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+# parentdir = os.path.dirname(currentdir)
+# backend_path = os.path.join(parentdir, "../trusat-backend")
+# sys.path.insert(1,backend_path) 
+from trusat_backend import database
 
 from .elfind import SGN, so2r
 
